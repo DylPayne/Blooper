@@ -17,7 +17,7 @@ namespace BlooperAPI.Controllers_External
         }
 
         [HttpPost(Name = "ExternalCreateMessage")]
-        public string Post(Message message)
+        public async Task<string> Post(Message message)
         {
             SqlConnection connection = new SqlConnection(Configuration.GetConnectionString("DevConnection"));
             connection.Open();
@@ -26,7 +26,7 @@ namespace BlooperAPI.Controllers_External
             SqlCommand command = new SqlCommand(spName, connection);
             command.CommandType = CommandType.StoredProcedure;
 
-            string bloopedText = Message.Bloop(message.text);
+            string bloopedText = await Message.Bloop(message.text);
 
             SqlParameter paramTo = new SqlParameter("@to", message.to);
             SqlParameter paramFrom = new SqlParameter("@from", message.from);
